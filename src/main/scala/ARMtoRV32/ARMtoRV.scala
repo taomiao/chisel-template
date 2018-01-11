@@ -14,7 +14,7 @@ class ARManalysis extends Module {
 		val start_analysis = Input(Bool())
 		val end_analysis = Output(Bool())
 		})
-	
+	val arm_inst_table = MIPS_Instructions;
 	def analysis() = {
 	
 	}	
@@ -61,6 +61,9 @@ class ARMtoRV extends Module {
 		val rv_Inst = Output(UInt(32.W))
 		val inst_Splited = Output(UInt(1.W))
 		})
+	val inst_ana = new ARManalysis()
+	inst_ana.io
+	val mid_inst = inst_ana.analysis()	
 	io.rv_Inst := io.arm_Inst
 	io.inst_Splited := false.B
 	printf(p"test")
