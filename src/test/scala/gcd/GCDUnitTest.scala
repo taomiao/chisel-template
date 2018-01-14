@@ -59,6 +59,7 @@ class GCDUnitTester(c: GCD) extends PeekPokeTester(c) {
   * sbt 'testOnly example.test.GCDTester'
   * }}}
   */
+/*
 class GCDTester extends ChiselFlatSpec {
   private val backendNames = if(firrtl.FileUtils.isCommandAvailable("verilator")) {
     Array("firrtl", "verilator")
@@ -106,3 +107,4 @@ class GCDTester extends ChiselFlatSpec {
     } should be (true)
   }
 }
+*/

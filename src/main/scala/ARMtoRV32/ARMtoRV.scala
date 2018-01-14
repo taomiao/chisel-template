@@ -14,9 +14,18 @@ class ARManalysis extends Module {
 		val start_analysis = Input(Bool())
 		val end_analysis = Output(Bool())
 		})
-	val arm_inst_table = MIPS_Instructions;
+	val arm_inst_table = MIPS_Instructions
+	val arm_inst_type = MIPS_Inst_type
+	when(io.start_analysis){
+		analysis()	
+	}
 	def analysis() = {
-	
+		//io.op := 3.U
+		val it = Iterator(arm_inst_table,arm_inst_table)
+		while(it.hasNext){
+			val vit = it.next()
+			printf(p"$vit")
+		}
 	}	
 }
 
@@ -60,11 +69,23 @@ class ARMtoRV extends Module {
 		val arm_Inst = Input(UInt(32.W))
 		val rv_Inst = Output(UInt(32.W))
 		val inst_Splited = Output(UInt(1.W))
+		val inst_op = Output(UInt(6.W))
+		val start = Input(Bool())
 		})
-	val inst_ana = new ARManalysis()
-	inst_ana.io
-	val mid_inst = inst_ana.analysis()	
-	io.rv_Inst := io.arm_Inst
+	val inst_ana = Module(new ARManalysis())
+	//io.start := false.B
+	inst_ana.io.inst := io.arm_Inst
+	io.inst_op := inst_ana.io.op
+	inst_ana.io.start_analysis := false.B	
+	val arm_inst_table = MIPS_Instructions
+	when(io.start){
+		printf(p"hello")
+		inst_ana.io.start_analysis := true.B	
+		io.rv_Inst := 0.U
+		when( MIPS_Instructions.MOVCI === io.arm_Inst ){
+			printf("okkkkkk")		
+		}		
+	} 
 	io.inst_Splited := false.B
 	printf(p"test")
 	
