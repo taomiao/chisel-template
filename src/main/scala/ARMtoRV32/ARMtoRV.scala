@@ -14,18 +14,30 @@ class ARManalysis extends Module {
 		val start_analysis = Input(Bool())
 		val end_analysis = Output(Bool())
 		})
-	val arm_inst_table = MIPS_Instructions
-	val arm_inst_type = MIPS_Inst_type
+	val arm_inst_table = MIPS_Instructions.Instructions
+	val arm_inst_type = MIPS_Inst_type.Inst_type
 	when(io.start_analysis){
 		analysis()	
 	}
 	def analysis() = {
-		//io.op := 3.U
-		val it = Iterator(arm_inst_table,arm_inst_table)
-		while(it.hasNext){
-			val vit = it.next()
-			printf(p"$vit")
-		}
+		//using switch(io.inst) maybe more efficent 
+		val inst_pat = MIPS_Instructions.Instructions.values
+		arm_inst_table.foreach{case (i,b) => when(b===io.inst){
+						printf(p"$i--->$b--->typeofinst ${arm_inst_type(i)}")
+						if(arm_inst_type(i) == 0){//R_type
+							printf(p"if work")
+							inst_format = ARM_R_type_format
+							op = 
+						}
+						else if(arm_inst_type(i) == 1){
+
+
+						}
+						else if(arm_inst_type(i) == 2){
+
+						}
+					} 
+				}
 	}	
 }
 
@@ -81,10 +93,7 @@ class ARMtoRV extends Module {
 	when(io.start){
 		printf(p"hello")
 		inst_ana.io.start_analysis := true.B	
-		io.rv_Inst := 0.U
-		when( MIPS_Instructions.MOVCI === io.arm_Inst ){
-			printf("okkkkkk")		
-		}		
+		io.rv_Inst := 0.U		
 	} 
 	io.inst_Splited := false.B
 	printf(p"test")
